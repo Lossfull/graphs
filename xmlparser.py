@@ -1,8 +1,5 @@
 import xml.etree.ElementTree as ET 
 
-def lol():
-    print('lol')
-
 def main():
     tree = ET.parse('planet.osm')
     db = tree.getroot()
