@@ -1,7 +1,7 @@
-from './parser.py' import main as ps
+import xmlparser
 
 def main():
-    ps()
+    xmlparser.main()
 
 if __name__ == "__main__":
     main()
