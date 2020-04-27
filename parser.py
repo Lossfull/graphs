@@ -2,12 +2,15 @@ import xml.etree.ElementTree as ET
 
 def main():
     tree = ET.parse('planet.osm')
-    root = tree.getroot()
+    db = tree.getroot()
     x = 0
-    for child in root:
+    for child in db:
         if child.tag == 'way':
-            x = x + 1
-    print(x)
+            way = child
+            print("\n id =", way.attrib['id'])
+            for element in way:
+                atrs = element.attrib
+    255
 
 if __name__ == "__main__":
     main()
