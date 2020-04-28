@@ -42,5 +42,22 @@ def getRelations():
         for member in child.iter('member'):
             res['members'].append({})
 
+def getBuildings():
+    buildings = []
+    for child in db.iter('way'):
+        way = child
+        print("\n id =", way.attrib['id'])
+        vals = {'node': ''}
+        for element in way.iter('tag'):
+            vals[element.attrib['k']] = element.attrib['v']
+        if not ('building' in vals):
+            continue
+        for element in way.iter('nd'):
+            vals['node'] = element.attrib['ref']
+            break
+        buildings.append(vals)
+        print(vals)
+    buildings
+
 if __name__ == "__main__":
-    getNodeByRef('1278222359')
+    getBuildings()
