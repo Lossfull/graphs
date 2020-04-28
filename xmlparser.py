@@ -34,7 +34,7 @@ def getNodeByRef(ref):
     }
     for child in node:
         res[child.attrib['k']] = child.attrib['v']
-    print(res)
+    res
 
 def getRelations():
     res = {'members': []}
@@ -59,5 +59,21 @@ def getBuildings():
         print(vals)
     buildings
 
+def getStreets():
+    streets = []
+    for child in db.iter('way'):
+        way = child
+        vals = {'refs': []}
+        for element in way.iter('tag'):
+            vals[element.attrib['k']] = element.attrib['v']
+        if not 'highway' in vals:
+            continue
+        print("\n id =", way.attrib['id'])
+        for element in way.iter('nd'):
+            vals['refs'].append(element.attrib['ref'])
+        streets.append(vals)
+        print(vals)
+    streets
+
 if __name__ == "__main__":
-    getBuildings()
+    getStreets()
