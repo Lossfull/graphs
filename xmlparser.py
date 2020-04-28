@@ -9,10 +9,11 @@ def main():
         if child.tag == 'way':
             way = child
             print("\n id =", way.attrib['id'])
-            vals = {}
+            vals = {'refs': []}
             for element in way.iter('tag'):
                 vals[element.attrib['k']] = element.attrib['v']
-                #print(, element.attrib['v'])
+            for element in way.iter('nd'):
+                vals['refs'].append(element.attrib['ref'])
             highways.append(vals)
             print(vals)
     highways
