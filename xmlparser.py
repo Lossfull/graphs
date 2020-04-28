@@ -46,12 +46,12 @@ def getBuildings():
     buildings = []
     for child in db.iter('way'):
         way = child
-        print("\n id =", way.attrib['id'])
         vals = {'node': ''}
         for element in way.iter('tag'):
             vals[element.attrib['k']] = element.attrib['v']
-        if not ('building' in vals):
+        if not 'building' in vals:
             continue
+        print("\n id =", way.attrib['id'])
         for element in way.iter('nd'):
             vals['node'] = element.attrib['ref']
             break
