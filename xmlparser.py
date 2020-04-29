@@ -36,10 +36,15 @@ def getNodeByRef(ref):
     return res
 
 def getRelations():
-    res = {'members': []}
+    res = []
     for child in db.iter('relation'):
+        vals = {'members': []}
         for member in child.iter('member'):
-            res['members'].append({})
+            vals['members'].append(member.attrib)
+        for tag in child.iter('tag'):
+            vals[tag.attrib['k']] = tag.attrib['v']
+    return res
+
 
 def getBuildings(type = ''):
     buildings = []
@@ -94,7 +99,6 @@ def getStreets():
 
 if __name__ == "__main__":
     print(getItemsByAmenity('hospital'))
-    print('ok')
     streets = getStreets()
     print(type([streets]))
     for street in streets:
