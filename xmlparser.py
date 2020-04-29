@@ -17,8 +17,7 @@ def getHighways():
         for element in way.iter('nd'):
             vals['refs'].append(element.attrib['ref'])
         highways.append(vals)
-        print(vals)
-    highways
+    return highways
 
 def getNodeByRef(ref):
     ref = str(ref)
@@ -34,7 +33,7 @@ def getNodeByRef(ref):
     }
     for child in node:
         res[child.attrib['k']] = child.attrib['v']
-    res
+    return res
 
 def getRelations():
     res = {'members': []}
@@ -42,7 +41,7 @@ def getRelations():
         for member in child.iter('member'):
             res['members'].append({})
 
-def getBuildings():
+def getBuildings(type = ''):
     buildings = []
     for child in db.iter('way'):
         way = child
@@ -56,8 +55,27 @@ def getBuildings():
             vals['node'] = element.attrib['ref']
             break
         buildings.append(vals)
+    return buildings
+
+def getItemsByAmenity(type = ''):
+    items = []
+    for child in db.iter('way'):
+        way = child
+        vals = {'node': ''}
+        for element in way.iter('tag'):
+            vals[element.attrib['k']] = element.attrib['v']
+        if not 'amenity' in vals:
+            continue
+        elif not vals['amenity'] == type:
+            continue 
+        print("\n id =", way.attrib['id'])
+        for element in way.iter('nd'):
+            vals['node'] = element.attrib['ref']
+            break
+        items.append(vals)
         print(vals)
-    buildings
+    print(type)
+    return items
 
 def getStreets():
     streets = []
@@ -68,12 +86,20 @@ def getStreets():
             vals[element.attrib['k']] = element.attrib['v']
         if not 'highway' in vals:
             continue
-        print("\n id =", way.attrib['id'])
+        #print("\n id =", way.attrib['id'])
         for element in way.iter('nd'):
             vals['refs'].append(element.attrib['ref'])
         streets.append(vals)
-        print(vals)
-    streets
+    return streets
 
 if __name__ == "__main__":
-    getStreets()
+    print(getItemsByAmenity('hospital'))
+    print('ok')
+    streets = getStreets()
+    print(type([streets]))
+    for street in streets:
+        if 'name' in street:
+            if street['name'] == 'улица Смирнова':    
+                for ref in street['refs']:
+                    getNodeByRef(ref)
+                print('')
