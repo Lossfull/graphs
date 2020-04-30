@@ -43,6 +43,7 @@ def getRelations():
             vals['members'].append(member.attrib)
         for tag in child.iter('tag'):
             vals[tag.attrib['k']] = tag.attrib['v']
+        res.append(vals)
     return res
 
 
@@ -97,13 +98,42 @@ def getStreets():
         streets.append(vals)
     return streets
 
-if __name__ == "__main__":
-    print(getItemsByAmenity('hospital'))
-    streets = getStreets()
-    print(type([streets]))
-    for street in streets:
-        if 'name' in street:
-            if street['name'] == 'улица Смирнова':    
-                for ref in street['refs']:
-                    getNodeByRef(ref)
-                print('')
+
+def getRoads():
+    streets = []
+    not_roads = []
+    not_roads.append('pedestrian')
+    not_roads.append('footway')
+    not_roads.append('bridleway')
+    not_roads.append('steps')
+    not_roads.append('path')
+    not_roads.append('sidewalk')
+    not_roads.append('cycleway')
+    not_roads.append('construction')
+
+    for child in db.iter('way'):
+        way = child
+        vals = {'refs': []}
+        for element in way.iter('tag'):
+            vals[element.attrib['k']] = element.attrib['v']
+        if not 'highway' in vals:
+            continue
+        if (vals['highway'] in not_roads):
+            continue
+        #print("\n id =", way.attrib['id'])
+        for element in way.iter('nd'):
+            vals['refs'].append(element.attrib['ref'])
+        streets.append(vals)
+    # print(streets)
+    return streets
+
+# if __name__ == "__main__":
+    # print(getItemsByAmenity('hospital'))
+    # streets = getStreets()
+    # print(type([streets]))
+    # for street in streets:
+    #     if 'name' in street:
+    #         if street['name'] == 'улица Смирнова':    
+    #             for ref in street['refs']:
+    #                 getNodeByRef(ref)
+    #             print('')
