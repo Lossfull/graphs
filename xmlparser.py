@@ -35,6 +35,12 @@ def getNodeByRef(ref):
         res[child.attrib['k']] = child.attrib['v']
     return res
 
+def getNodesCoords():
+    res = {}
+    for child in db.iter('node'):
+        res[child.attrib['id']] = (child.attrib['lat'], child.attrib['lon'])
+    return res
+
 def getRelations():
     res = []
     for child in db.iter('relation'):
@@ -56,7 +62,7 @@ def getBuildings(type = ''):
             vals[element.attrib['k']] = element.attrib['v']
         if not 'building' in vals:
             continue
-        print("\n id =", way.attrib['id'])
+        # print("\n id =", way.attrib['id'])
         for element in way.iter('nd'):
             vals['node'] = element.attrib['ref']
             break
@@ -79,8 +85,8 @@ def getItemsByAmenity(type = ''):
             vals['node'] = element.attrib['ref']
             break
         items.append(vals)
-        print(vals)
-    print(type)
+        # print(vals)
+    # print(type)
     return items
 
 def getStreets():
