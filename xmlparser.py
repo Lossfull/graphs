@@ -19,6 +19,8 @@ def getHighways():
         highways.append(vals)
     return highways
 
+
+
 def getNodeByRef(ref):
     ref = str(ref)
     node = {}
@@ -40,6 +42,33 @@ def getNodesCoords():
     for child in db.iter('node'):
         res[child.attrib['id']] = (child.attrib['lat'], child.attrib['lon'])
     return res
+
+def getBuildingsNodes():
+    buildings = []
+    for child in db.iter('way'):
+        way = child
+        vals = {'node': ''}
+        for element in way.iter('tag'):
+            vals[element.attrib['k']] = element.attrib['v']
+        if not 'building' in vals:
+            continue
+        buildings.append(next(way.iter('nd')).attrib['ref'])
+    return buildings
+
+
+def getHospitalsNodes():
+    hospitals = []
+    for child in db.iter('way'):
+        way = child
+        vals = {'node': ''}
+        for element in way.iter('tag'):
+            vals[element.attrib['k']] = element.attrib['v']
+        if not 'amenity' in vals:
+            continue
+        elif not vals['amenity'] == 'hospital':
+            continue 
+        hospitals.append(next(way.iter('nd')).attrib['ref'])
+    return hospitals
 
 def getRelations():
     res = []
@@ -143,3 +172,4 @@ def getRoads():
     #             for ref in street['refs']:
     #                 getNodeByRef(ref)
     #             print('')
+
