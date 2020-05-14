@@ -16,6 +16,8 @@ def main():
     hospitals_list = xmlparser.getHospitalsNodes()
     N = 10
     M = 10
+
+
     buildings = []
     hospitals = []
     coords = xmlparser.getNodesCoords()
